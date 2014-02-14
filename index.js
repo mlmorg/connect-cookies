@@ -14,11 +14,13 @@ var Keygrip = require('keygrip');
  * @api public
  */
 
-module.exports = function(keys){
+module.exports = function(keys, options){
+  options = options || {};
   if (Array.isArray(keys)) keys = new Keygrip(keys);
+  var requestKey = options.requestKey || 'cookies';
   
   return function(req, res, next){
-    req.cookies = res.cookies = Cookies(req, res, keys);
+    req[requestKey] = res[requestKey] = Cookies(req, res, keys);
     next();
   };
 };
